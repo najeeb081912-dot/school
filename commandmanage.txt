@@ -1,13 +1,18 @@
-wipe all masters
-find "/home/najebe/school" -type d -name MASTER -print0 | xargs -0 -I{} sh -c 'master="$1"; parent="${master%/MASTER}"; find "$parent" -type f ! -path "*/MASTER/*" -exec cp -f -- {} "$master/" \;' _ "{}"
+# Wipe all ZMASTER folders
+find "/home/najebe/school" -type d -name ZMASTER -exec find {} -type f -delete \;
 
-refresh all masters
-find "/home/najebe/school" -type d -name MASTER -print0 | while IFS= read -r -d '' master; do
-    parent="${master%/MASTER}"
+# Refresh all ZMASTER folders
+find "/home/najebe/school" -type d -name ZMASTER -print0 | while IFS= read -r -d '' master; do
+    parent="${master%/ZMASTER}"
     find "$parent" -type f ! -path "$master/*" -exec cp -f -- {} "$master/" \;
 done
-
 git
 git add .
 git commit -m "updated"
 git push
+
+find "/home/najebe/school" -type d -name MASTER -exec find {} -type f -delete \;
+find "/home/najebe/school" -type d -name MASTER -print0 | while IFS= read -r -d '' master; do
+    parent="${master%/MASTER}"
+    find "$parent" -type f ! -path "$master/*" -exec cp -f -- {} "$master/" \;
+done
