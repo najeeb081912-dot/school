@@ -1,1 +1,13 @@
+wipe all masters
+find "/home/najebe/school" -type d -name MASTER -print0 | xargs -0 -I{} sh -c 'master="$1"; parent="${master%/MASTER}"; find "$parent" -type f ! -path "*/MASTER/*" -exec cp -f -- {} "$master/" \;' _ "{}"
 
+refresh all masters
+find "/home/najebe/school" -type d -name MASTER -print0 | while IFS= read -r -d '' master; do
+    parent="${master%/MASTER}"
+    find "$parent" -type f ! -path "$master/*" -exec cp -f -- {} "$master/" \;
+done
+
+git
+git add .
+git commit -m "updated"
+git push
