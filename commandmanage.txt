@@ -1,8 +1,8 @@
 # Wipe all ZMASTER folders
-find "/home/najebe/school" -type d -name ZMASTER -exec find {} -type f -delete \;
+find "/home/najebe/Projects/gitlabs/school" -type d -name ZMASTER -exec find {} -type f -delete \;
 
 # Refresh all ZMASTER folders
-find "/home/najebe/school" -type d -name ZMASTER -print0 | while IFS= read -r -d '' master; do
+find "/home/najebe/Projects/gitlabs/school" -type d -name ZMASTER -print0 | while IFS= read -r -d '' master; do
     parent="${master%/ZMASTER}"
     find "$parent" -type f ! -path "$master/*" -exec cp -f -- {} "$master/" \;
 done
